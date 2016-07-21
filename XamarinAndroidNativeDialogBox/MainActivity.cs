@@ -16,15 +16,31 @@ namespace XamarinAndroidNativeDialogBox
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
-            // Set our view from the "main" layout resource
+            
             SetContentView(Resource.Layout.Main);
 
-            // Get our button from the layout resource,
-            // and attach an event to it
             Button button = FindViewById<Button>(Resource.Id.MyButton);
 
-            button.Click += delegate { button.Text = string.Format("{0} clicks!", count++); };
+            button.Click += delegate {
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.SetTitle("Specify Action");
+                alert.SetMessage("Do you want to add or substract?");
+                alert.SetPositiveButton("Add", (senderAlert, args) =>
+                {
+                    count++;
+                    button.Text = string.Format("{0} clicks!", count);
+                });
+
+                alert.SetNegativeButton("Substract", (senderAlert, args) =>
+                {
+                    count--;
+                    button.Text = string.Format("{0} clicks!", count);
+                });
+
+                Dialog dialog = alert.Create();
+                dialog.Show();
+
+            };
         }
     }
 }
